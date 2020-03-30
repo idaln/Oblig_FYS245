@@ -20,6 +20,7 @@ def phi_value(pos, pos_0, E, sigma):
 
 
 def V(x, x_start_step, V_0):
+    """Returns potential for given x value."""
     if x > x_start_step:
         return V_0
     else:
@@ -46,4 +47,5 @@ if __name__ == '__main__':
     x_start_step = 100E-9
     x_0 = 50E-9
     L = 200E-9
-    print(phi_zero(75E-9, x_0, E, sigma, x_start_step, V_0))
+    print(V(125E-9, x_start_step, V_0))
+    print(phi_zero(100E-9, x_0, E, sigma, x_start_step, V_0))
