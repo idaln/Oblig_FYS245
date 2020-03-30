@@ -10,25 +10,30 @@ import matplotlib.pyplot as plt
 
 # Defining global variables
 h_bar = 1.055E-34
-m = 9.109E-19
+m = 9.109E-31
+
 
 def k(E, m):
     """ Calculates wave number k. """
     return np.sqrt(2*m*E)/h_bar
 
+
 def k_0(E, V_0, m):
     """ Calculated wave number k_0 for step potential. """
     return np.sqrt(2*m*(E-V_0))/h_bar
+
 
 def trans_coef(E, V_0):
     """ Calculates transmission coefficient for particle interacting with
     step potential. """
     return (4*k(E, m)*k_0(E, V_0, m))/(k(E, m) + k_0(E, V_0, m))**2
 
+
 def ref_coef(E, V_0):
     """ Calculates reflection coefficient for particle interacting with step
     potential. """
     return (k(E, m) - k_0(E, V_0, m))**2 / (k(E, m) + k_0(E, V_0, m))**2
+
 
 if __name__ == '__main__':
     E = 0.20 * 1.6602E-13
