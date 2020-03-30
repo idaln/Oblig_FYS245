@@ -30,14 +30,12 @@ def V(x, x_start_step, V_0):
 def phi_zero(pos, pos_0, E, sigma, x_start_step, V_0):
     """ First phi value    """
     delta_pos = 1.5E-10
-    return ((1j * h_bar)/(2*m) * (phi_value(pos+delta_pos, pos_0, E, sigma)
-                                  - 2 * phi_value(pos, pos_0, E, sigma)
-                                  + phi_value(
-                pos - delta_pos, pos_0, E, sigma
-            ))
-            + (V(pos, x_start_step, V_0) + 1) * phi_value(
-                pos, pos_0, E, sigma
-            ))
+    return ((1j * h_bar)/(2*m*delta_pos**2) *
+            (phi_value(pos+delta_pos, pos_0, E, sigma)
+             - 2 * phi_value(pos, pos_0, E, sigma) +
+             phi_value(pos - delta_pos, pos_0, E, sigma))
+            + (V(pos, x_start_step, V_0) + 1) *
+            phi_value(pos, pos_0, E, sigma))
 
 
 if __name__ == '__main__':
