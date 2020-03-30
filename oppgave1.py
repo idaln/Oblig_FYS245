@@ -3,7 +3,7 @@
 __author__ = "Kjersti Rustad Kvisberg & Ida Lunde Naalsund"
 __email__ = "kjkv@nmbu.no, idna@nmbu.no"
 
-# Oppgave 1
+# Problem 1
 
 import numpy as np
 import matplotlib.pyplot as plt
