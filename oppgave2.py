@@ -47,6 +47,11 @@ def phi(pos, pos_0, delta_pos, E, sigma, x_start_step, V_0, prev_phi):
         raise ValueError("Invalid position, must be between 0 and L.")
 
 
+def prob_density(phi_value):
+    """ Calculates probability density """
+    return numpy.conj(phi_value) * phi_value
+
+
 if __name__ == '__main__':
     sigma = 1E-8
     E = 0.2 * 1.6602E-13
@@ -57,7 +62,7 @@ if __name__ == '__main__':
 
     delta_pos = 1.5E-10
     delta_t = 2.25E-19
-    end_time = 1E-18
+    end_time = 5E-18
 
     x_values = []
     t_values = []
@@ -72,7 +77,7 @@ if __name__ == '__main__':
         t_values.append(t)
         t += delta_t
 
-    phi_values = numpy.zeros((len(t_values), len(x_values)))
+    prob_densities = numpy.zeros((len(t_values), len(x_values)))
     prev_phi = 0
 
     for n in range(0, len(x_values)):
@@ -81,12 +86,12 @@ if __name__ == '__main__':
             current_phi = phi(
                 x, x_0, delta_pos, E, sigma, x_start_step, V_0, prev_phi)
             prev_phi = current_phi
-            phi_values.itemset((m, n), current_phi)
+            prob_densities.itemset((m, n), prob_density(current_phi))
 
-    phi_value_data = pd.DataFrame(phi_values, columns=x_values)
+    prob_density_values = pd.DataFrame(prob_densities, columns=x_values)
     V_values = [V(x, x_start_step, V_0) for x in x_values]
 
     for i in range(len(t_values)):
-        plt.plot(phi_value_data.iloc[i])
+        plt.plot(prob_density_values.iloc[i])
         plt.plot(x_values, V_values)
         plt.show()
