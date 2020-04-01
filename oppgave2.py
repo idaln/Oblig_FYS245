@@ -63,7 +63,7 @@ if __name__ == '__main__':
     t_values = []
     phi_values = []
 
-    x = 0
+    x = x_0
     while x < L:
         x_values.append(x)
         x += delta_pos
@@ -85,6 +85,7 @@ if __name__ == '__main__':
 
     phi_value_data = pd.DataFrame(phi_values, columns=x_values)
     V_values = [V(x, x_start_step, V_0) for x in x_values]
+
     for i in range(len(t_values)):
         plt.plot(phi_value_data.iloc[i])
         plt.plot(x_values, V_values)
