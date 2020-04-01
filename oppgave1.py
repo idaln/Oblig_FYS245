@@ -53,3 +53,4 @@ if __name__ == '__main__':
     plt.ylabel('Transmission coefficient')
     plt.show()
 
+
