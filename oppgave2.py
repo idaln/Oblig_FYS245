@@ -84,7 +84,8 @@ if __name__ == '__main__':
             phi_values.itemset((m, n), current_phi)
 
     phi_value_data = pd.DataFrame(phi_values, columns=x_values)
-
+    V_values = [V(x, x_start_step, V_0) for x in x_values]
     for i in range(len(t_values)):
         plt.plot(phi_value_data.iloc[i])
+        plt.plot(x_values, V_values)
         plt.show()
