@@ -54,8 +54,8 @@ def prob_density(phi_value):
 
 if __name__ == '__main__':
     sigma = 1E-8
-    E = 0.2 * 1.6602E-13
-    V_0 = 0.16 * 1.6602E-13
+    E = 0.2 * 1.602E-19
+    V_0 = 0.16 * 1.602E-19
     x_start_step = 100E-9
     x_0 = 50E-9
     L = 200E-9
@@ -78,6 +78,7 @@ if __name__ == '__main__':
         t += delta_t
 
     prob_densities = numpy.zeros((len(t_values), len(x_values)))
+    prev_phi = None
 
     for n in range(0, len(x_values)):
         for m in range(0, len(t_values)):
