@@ -14,7 +14,7 @@ m = 9.109E-31
 
 def psi(pos, pos_0, E, sigma):
     """ Time-independent wave function for wave packet. """
-    k = numpy.sqrt(2*m*E)/h_bar
+    k = (numpy.sqrt(2*m*E))/h_bar
     a = 1/(numpy.pi**(1/4)*numpy.sqrt(sigma))
     b = (-1/2) * ((pos - pos_0)**2)/(sigma**2)
     c = 1j * k * (pos - pos_0)
@@ -70,6 +70,9 @@ if __name__ == '__main__':
     t_values = []
     phi_values = []
 
+    x_list = numpy.linspace(0, L, 1500)
+    time_list = numpy.linspace(0, 40e-13, 100)
+
     x = 0
     while x < L:
         x_values.append(x)
@@ -79,26 +82,27 @@ if __name__ == '__main__':
         t_values.append(t)
         t += delta_t
 
-    prob_densities = numpy.empty((len(t_values), len(x_values)))
+    prob_densities = numpy.empty((len(time_list), len(x_list)))
     prev_phi = None
 
-    for n in range(0, len(x_values)):
-        for m in range(0, len(t_values)):
+    for n in range(0, len(x_list)):
+        for m in range(0, len(time_list)):
             if m == 0:
                 current_phi = psi(x, x_0, E, sigma)
                 prev_phi = current_phi
             else:
-                x = x_values[n]
+                x = x_list[n]
                 current_phi = phi(
                     x, x_0, delta_pos, E, sigma,
                     x_start_step, V_0, prev_phi, delta_t)
                 prev_phi = current_phi
             prob_densities.itemset((m, n), prob_density(current_phi))
 
-    prob_density_values = pd.DataFrame(prob_densities, columns=x_values)
-    V_values = [V(x, x_start_step, V_0) for x in x_values]
+    prob_density_values = pd.DataFrame(prob_densities, columns=x_list)
+    V_values = [V(x, x_start_step, V_0) for x in x_list]
 
     for i in range(len(t_values)):
+        plt.cla()
         plt.plot(prob_density_values.iloc[i])
-        plt.plot(x_values, V_values)
-        plt.show()
+        #plt.plot(x_list, V_values)
+        plt.pause(0.5)
