@@ -26,23 +26,25 @@ def psi(pos, pos_0, E, sigma):
 
 def V(x, x_start_step, V_0):
     """Returns potential for given x value."""
-    if x > x_start_step:
+    if x >= x_start_step:
         return V_0
     else:
         return 0
 
 
-def phi(pos, pos_0, delta_pos, E, sigma, x_start_step, V_0, prev_phi):
+def phi(pos, pos_0, delta_pos, E, sigma, x_start_step, V_0, prev_phi, delta_t):
     """ Calculates phi value """
+    a = (1j*h_bar)/(2*m)
+    b = psi(pos + delta_pos, pos_0, E, sigma) - 2 * psi(pos, pos_0, E, sigma) \
+        + psi(pos - delta_pos, pos_0, E, sigma)
+    c = delta_pos ** 2
+    d = V(pos, x_start_step, V_0)
+    e = psi(pos, pos_0, E, sigma)
+    f = 1j * h_bar
     if pos == 0 or pos == L:
         return 0
     elif 0 < pos < L:
-        return prev_phi + (1j*h_bar/2*m) * \
-               (psi(pos + delta_pos, pos_0, E, sigma) -
-                2 * psi(pos, pos_0, E, sigma) +
-                psi(pos - delta_pos, pos_0, E, sigma)) / delta_pos ** 2 \
-               + (V(pos, x_start_step, V_0) *
-                  psi(pos, pos_0, E, sigma)) / (1j * h_bar)
+        return prev_phi + ((a * (b / c)) + ((d * e) / f)) * delta_t
     else:
         raise ValueError("Invalid position, must be between 0 and L.")
 
@@ -68,7 +70,7 @@ if __name__ == '__main__':
     t_values = []
     phi_values = []
 
-    x = x_0
+    x = 0
     while x < L:
         x_values.append(x)
         x += delta_pos
@@ -77,7 +79,7 @@ if __name__ == '__main__':
         t_values.append(t)
         t += delta_t
 
-    prob_densities = numpy.zeros((len(t_values), len(x_values)))
+    prob_densities = numpy.empty((len(t_values), len(x_values)))
     prev_phi = None
 
     for n in range(0, len(x_values)):
@@ -88,7 +90,8 @@ if __name__ == '__main__':
             else:
                 x = x_values[n]
                 current_phi = phi(
-                    x, x_0, delta_pos, E, sigma, x_start_step, V_0, prev_phi)
+                    x, x_0, delta_pos, E, sigma,
+                    x_start_step, V_0, prev_phi, delta_t)
                 prev_phi = current_phi
             prob_densities.itemset((m, n), prob_density(current_phi))
 
