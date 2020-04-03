@@ -78,14 +78,17 @@ if __name__ == '__main__':
         t += delta_t
 
     prob_densities = numpy.zeros((len(t_values), len(x_values)))
-    prev_phi = 0
 
     for n in range(0, len(x_values)):
         for m in range(0, len(t_values)):
-            x = x_values[n]
-            current_phi = phi(
-                x, x_0, delta_pos, E, sigma, x_start_step, V_0, prev_phi)
-            prev_phi = current_phi
+            if m == 0:
+                current_phi = psi(x, x_0, E, sigma)
+                prev_phi = current_phi
+            else:
+                x = x_values[n]
+                current_phi = phi(
+                    x, x_0, delta_pos, E, sigma, x_start_step, V_0, prev_phi)
+                prev_phi = current_phi
             prob_densities.itemset((m, n), prob_density(current_phi))
 
     prob_density_values = pd.DataFrame(prob_densities, columns=x_values)
