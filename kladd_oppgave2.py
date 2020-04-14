@@ -117,22 +117,22 @@ if __name__ ==  "__main__":
 #    """ Calculates probability density """
 #    return numpy.conj(phi_value) * phi_value
 
-#    prob_densities = numpy.empty((len(time_list), len(x_list)))
+#    prob_densities = numpy.empty((len(time_list), len(x_values)))
 #    prev_phi = None
 #    x = 0
-#    for n in range(0, len(x_list)):
+#    for n in range(0, len(x_values)):
 #        for m in range(0, len(time_list)):
 #            if m == 0:
 #                current_phi = psi(x, x_0, E, sigma)
 #                prev_phi = current_phi
 #            else:
-#                x = x_list[n]
+#                x = x_values[n]
 #                current_phi = phi(
 #                    x, x_0, delta_pos, E, sigma,
 #                    x_start_step, V_0, prev_phi, delta_t)
 #                prev_phi = current_phi
 #            prob_densities.itemset((m, n), prob_density(current_phi))
 
-#    prob_density_values = pd.DataFrame(prob_densities, columns=x_list)
-#    V_values = [V(x, x_start_step, V_0) for x in x_list]
+#    prob_density_values = pd.DataFrame(prob_densities, columns=x_values)
+#    V_values = [V(x, x_start_step, V_0) for x in x_values]
 
