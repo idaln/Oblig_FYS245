@@ -4,7 +4,6 @@ __author__ = "Kjersti Rustad Kvisberg & Ida Lunde Naalsund"
 __email__ = "kjkv@nmbu.no, idna@nmbu.no"
 
 import numpy
-import pandas as pd
 import matplotlib.pyplot as plt
 
 # Defining global variables
@@ -31,27 +30,17 @@ def V(x, x_start_step, V_0):
     else:
         return 0
 
+def reflection_coef(x_values, phi_values):
+    x_interval = int(len(x_values)/2)
+    return abs(numpy.trapz(x_values[:x_interval],
+                           numpy.conj(phi_values[:x_interval]) *
+                                      phi_values[:x_interval]))
 
-def phi(pos, pos_0, delta_pos, E, sigma, x_start_step, V_0, prev_phi, delta_t):
-    """ Calculates phi value """
-    a = (1j*h_bar)/(2*m)
-    b = psi(pos + delta_pos, pos_0, E, sigma) - 2 * psi(pos, pos_0, E, sigma) \
-        + psi(pos - delta_pos, pos_0, E, sigma)
-    c = delta_pos ** 2
-    d = V(pos, x_start_step, V_0)
-    e = psi(pos, pos_0, E, sigma)
-    f = 1j * h_bar
-    if pos == 0 or pos == L:
-        return 0
-    elif 0 < pos < L:
-        return prev_phi + ((a * (b / c)) + ((d * e) / f)) * delta_t
-    else:
-        raise ValueError("Invalid position, must be between 0 and L.")
-
-
-def prob_density(phi_value):
-    """ Calculates probability density """
-    return numpy.conj(phi_value) * phi_value
+def transmission_coef(x_values, phi_values):
+    x_interval = int(len(x_values)/2)
+    return abs(numpy.trapz(x_values[x_interval:],
+                           numpy.conj(phi_values[x_interval:]) *
+                                      phi_values[x_interval:]))
 
 
 if __name__ == '__main__':
@@ -61,44 +50,48 @@ if __name__ == '__main__':
     x_start_step = 100E-9
     x_0 = 50E-9
     L = 200E-9
-
     delta_pos = 1.5E-10
-    #delta_t = 2.25E-19
-    #end_time = 5E-18
+    delta_t = 2.25E-19
     time_steps = 2E6
     plot_step = 5000
 
-    phi_values = []
-
     x_list = numpy.arange(0, L, delta_pos)
+    psi_values = numpy.array([psi(pos, x_0, E, sigma) for pos in x_list])
 
-    #time_list = numpy.linspace(0, 40e-13, 100)
-    #t = 0
-    #while t < end_time:
-    #    t_values.append(t)
-    #    t += delta_t
+    V_values = numpy.array([V(pos, x_start_step, V_0) for pos in x_list])
+    a = delta_t / 1j * h_bar
+    b = -h_bar ** 2 / 2 * m
 
-    prob_densities = numpy.empty((len(time_list), len(x_list)))
-    prev_phi = None
-    x = 0
-    for n in range(0, len(x_list)):
-        for m in range(0, len(time_list)):
-            if m == 0:
-                current_phi = psi(x, x_0, E, sigma)
-                prev_phi = current_phi
-            else:
-                x = x_list[n]
-                current_phi = phi(
-                    x, x_0, delta_pos, E, sigma,
-                    x_start_step, V_0, prev_phi, delta_t)
-                prev_phi = current_phi
-            prob_densities.itemset((m, n), prob_density(current_phi))
+    counter = 0
+    img_num = 0
 
-    prob_density_values = pd.DataFrame(prob_densities, columns=x_list)
-    V_values = [V(x, x_start_step, V_0) for x in x_list]
+    for time in range(int(time_steps)):
+        sec_deriv_psi =  (numpy.pad(psi_values[1:], (0, 1), 'constant',
+                                constant_values=0) + numpy.pad
+        (psi_values[0:-1],
+                         (1, 0), 'constant', constant_values=0) - 2 *
+                         psi_values) / delta_pos ** 2
 
-    for i in range(len(t_values)):
-        plt.cla()
-        plt.plot(prob_density_values.iloc[i])
-        plt.plot(x_values, V_values)
-        plt.show()
+        # Building the wave packet
+        phi_values = psi_values + a * (b * sec_deriv_psi + V_values *
+                                       psi_values)
+
+        # Defining wave packet at boundaries
+        phi_values[-1] = 0
+        phi_values[0] = 0
+
+        # Plotting the wave packet
+        if counter % plot_step == 0:
+            fig = plt.figure()
+            plt.plot(x_list, (numpy.conj(phi_values)*phi_values))
+            fig.savefig(f'img{str(img_num)}.png')
+            plt.close(fig)
+            plt.show()
+            img_num += 1
+            R = reflection_coef(x_list, phi_values)
+            T = transmission_coef(x_list, phi_values)
+
+        psi_values = phi_values
+        counter += 1
+
+
