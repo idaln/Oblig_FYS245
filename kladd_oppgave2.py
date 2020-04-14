@@ -95,3 +95,44 @@ if __name__ ==  "__main__":
                 Psi_v[int(len(x_v) / 2):])))
         psi_v = Psi_v
         counter += 1
+
+#def phi(pos, pos_0, delta_pos, E, sigma, x_start_step, V_0, prev_phi, delta_t):
+#    """ Calculates phi value """
+#    a = (1j*h_bar)/(2*m)
+#    b = psi(pos + delta_pos, pos_0, E, sigma) - 2 * psi(pos, pos_0, E, sigma) \
+#        + psi(pos - delta_pos, pos_0, E, sigma)
+#    c = delta_pos ** 2
+#    d = V(pos, x_start_step, V_0)
+#    e = psi(pos, pos_0, E, sigma)
+#    f = 1j * h_bar
+#    if pos == 0 or pos == L:
+#        return 0
+#    elif 0 < pos < L:
+#        return prev_phi + ((a * (b / c)) + ((d * e) / f)) * delta_t
+#    else:
+#        raise ValueError("Invalid position, must be between 0 and L.")
+
+
+#def prob_density(phi_value):
+#    """ Calculates probability density """
+#    return numpy.conj(phi_value) * phi_value
+
+#    prob_densities = numpy.empty((len(time_list), len(x_list)))
+#    prev_phi = None
+#    x = 0
+#    for n in range(0, len(x_list)):
+#        for m in range(0, len(time_list)):
+#            if m == 0:
+#                current_phi = psi(x, x_0, E, sigma)
+#                prev_phi = current_phi
+#            else:
+#                x = x_list[n]
+#                current_phi = phi(
+#                    x, x_0, delta_pos, E, sigma,
+#                    x_start_step, V_0, prev_phi, delta_t)
+#                prev_phi = current_phi
+#            prob_densities.itemset((m, n), prob_density(current_phi))
+
+#    prob_density_values = pd.DataFrame(prob_densities, columns=x_list)
+#    V_values = [V(x, x_start_step, V_0) for x in x_list]
+
