@@ -99,6 +99,7 @@ if __name__ == '__main__':
     V_values = [V(x, x_start_step, V_0) for x in x_values]
 
     for i in range(len(t_values)):
+        plt.cla()
         plt.plot(prob_density_values.iloc[i])
         plt.plot(x_values, V_values)
-        plt.show()
+        plt.pause(0.2)
