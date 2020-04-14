@@ -39,57 +39,59 @@ def V(x):
     else:
         return V_0
 
-
-x_v = np.arange(0, L, delta_x)
-psi_v = np.array([psi(x) for x in x_v])
-psi_v[len(x_v) - 1] = 0
-psi_v[0] = 0
-V_values = np.array([V(x) for x in x_v])
-a = (delta_t / (1j * h_bar))
-b = (-(h_bar ** 2 / (2 * m)))
-counter = 0
-pict_count = 0
-for time in range(timesteps):
-    d2psi = (np.pad(psi_v[1:len(x_v)], (0, 1), 'constant',
-                    constant_values=0) + np.pad(psi_v[0:len(x_v) - 1], (1, 0),
-                                                'constant',
-                                                constant_values=0) - 2 * psi_v) / delta_x ** 2
-    V_psi = V_values * psi_v
-    Psi_v = psi_v + a * (b * d2psi + V_psi)
-    Psi_v[len(x_v) - 1] = 0
-    Psi_v[0] = 0
-    if counter % plot_step == 0:
-        fig = plt.figure()
-        plt.plot(x_v, Psi_v * np.conj(Psi_v))
-        fig.savefig(f"img{str(pict_count)}.png")
-        plt.close(fig)
-        plt.show()
-        pict_count += 1
-        x1 = x_v[:int(len(x_v) / 2)]
-        x2 = x_v[int(len(x_v) / 2):]
-        R_coeff = abs(np.trapz(x1, Psi_v[:int(len(x_v) / 2)] * np.conj(
-            Psi_v[:int(len(x_v) / 2)])))
-        T_coeff = abs(np.trapz(x2, Psi_v[int(len(x_v) / 2):] * np.conj(
-            Psi_v[int(len(x_v) / 2):])))
-    psi_v = Psi_v
-    counter += 1
-
 # Lager video
-import cv2
-import os
+#import cv2
+#import os
+#
+# image_folder = 'C:/Users/idaln/OneDrive/Dokumenter/FYS245'
+#
+# video_name = 'Kvantepropagering.avi'
+#
+# images = [img for img in os.listdir(image_folder) if img.endswith(".png")]
+# frame = cv2.imread(os.path.join(image_folder, images[0]))
+# height, width, layers = frame.shape
+#
+# video = cv2.VideoWriter(video_name, 0, 1, (width, height))
+#
+# for image in images:
+#     video.write(cv2.imread(os.path.join(image_folder, image)))
+#
+# video.release()
+# cv2.destroyAllWindows()
 
-image_folder = 'C:/Users/idaln/OneDrive/Dokumenter/FYS245'
+if __name__ ==  "__main__":
 
-video_name = 'Kvantepropagering.avi'
-
-images = [img for img in os.listdir(image_folder) if img.endswith(".png")]
-frame = cv2.imread(os.path.join(image_folder, images[0]))
-height, width, layers = frame.shape
-
-video = cv2.VideoWriter(video_name, 0, 1, (width, height))
-
-for image in images:
-    video.write(cv2.imread(os.path.join(image_folder, image)))
-
-video.release()
-cv2.destroyAllWindows()
+    x_v = np.arange(0, L, delta_x)
+    psi_v = np.array([psi(x) for x in x_v])
+    psi_v[len(x_v) - 1] = 0
+    psi_v[0] = 0
+    V_values = np.array([V(x) for x in x_v])
+    a = (delta_t / (1j * h_bar))
+    b = (-(h_bar ** 2 / (2 * m)))
+    counter = 0
+    pict_count = 0
+    for time in range(timesteps):
+        d2psi = (np.pad(psi_v[1:len(x_v)], (0, 1), 'constant',
+                        constant_values=0) + np.pad(psi_v[0:len(x_v) - 1],
+                                                    (1, 0),
+                                                    'constant',
+                                                    constant_values=0) - 2 * psi_v) / delta_x ** 2
+        V_psi = V_values * psi_v
+        Psi_v = psi_v + a * (b * d2psi + V_psi)
+        Psi_v[len(x_v) - 1] = 0
+        Psi_v[0] = 0
+        if counter % plot_step == 0:
+            fig = plt.figure()
+            plt.plot(x_v, Psi_v * np.conj(Psi_v))
+            fig.savefig(f"img{str(pict_count)}.png")
+            plt.close(fig)
+            plt.show()
+            pict_count += 1
+            x1 = x_v[:int(len(x_v) / 2)]
+            x2 = x_v[int(len(x_v) / 2):]
+            R_coeff = abs(np.trapz(x1, Psi_v[:int(len(x_v) / 2)] * np.conj(
+                Psi_v[:int(len(x_v) / 2)])))
+            T_coeff = abs(np.trapz(x2, Psi_v[int(len(x_v) / 2):] * np.conj(
+                Psi_v[int(len(x_v) / 2):])))
+        psi_v = Psi_v
+        counter += 1
