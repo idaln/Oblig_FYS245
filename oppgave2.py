@@ -63,28 +63,24 @@ if __name__ == '__main__':
     L = 200E-9
 
     delta_pos = 1.5E-10
-    delta_t = 2.25E-19
-    end_time = 5E-18
+    #delta_t = 2.25E-19
+    #end_time = 5E-18
+    time_steps = 2E6
+    plot_step = 5000
 
-    x_values = []
-    t_values = []
     phi_values = []
 
-    x_list = numpy.linspace(0, L, 1500)
-    time_list = numpy.linspace(0, 40e-13, 100)
+    x_list = numpy.arange(0, L, delta_pos)
 
-    x = 0
-    while x < L:
-        x_values.append(x)
-        x += delta_pos
-    t = 0
-    while t < end_time:
-        t_values.append(t)
-        t += delta_t
+    #time_list = numpy.linspace(0, 40e-13, 100)
+    #t = 0
+    #while t < end_time:
+    #    t_values.append(t)
+    #    t += delta_t
 
     prob_densities = numpy.empty((len(time_list), len(x_list)))
     prev_phi = None
-
+    x = 0
     for n in range(0, len(x_list)):
         for m in range(0, len(time_list)):
             if m == 0:
