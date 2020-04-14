@@ -59,7 +59,7 @@ if __name__ == '__main__':
     L = 200E-9
     delta_pos = 1.5E-10
     delta_t = 2.25E-19
-    time_steps = 10000
+    time_steps = 2E6
     plot_step = 5000
 
     x_values = numpy.arange(0, L, delta_pos)
@@ -76,7 +76,7 @@ if __name__ == '__main__':
         # Building the wave packet
         sec_deriv_psi = (numpy.pad(psi_values[1:], (0, 1), 'constant',
                                    constant_values=0)
-                         + numpy.pad(psi_values[0:-1], (1, 0), 'constant',
+                         + numpy.pad(psi_values[:-1], (1, 0), 'constant',
                                      constant_values=0) - 2 * psi_values) \
                         / delta_pos ** 2
 
@@ -90,7 +90,7 @@ if __name__ == '__main__':
         # Plotting the wave packet
         if counter % plot_step == 0:
             fig = plt.figure()
-            plt.plot(x_values, (numpy.conj(phi_values) * phi_values))
+            plt.plot(x_values, (phi_values * numpy.conj(phi_values)))
             fig.savefig(f'img{str(img_num)}.png')
             plt.close(fig)
             plt.show()
