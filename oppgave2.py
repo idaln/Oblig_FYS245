@@ -104,5 +104,5 @@ if __name__ == '__main__':
     for i in range(len(t_values)):
         plt.cla()
         plt.plot(prob_density_values.iloc[i])
-        #plt.plot(x_list, V_values)
-        plt.pause(0.5)
+        plt.plot(x_values, V_values)
+        plt.show()
