@@ -61,13 +61,14 @@ if __name__ == '__main__':
     plot_step = 5000
 
     x_values = numpy.arange(0, L, delta_pos)
-    psi_values = numpy.array([psi(pos, x_0, E, sigma, x_start_step, V_0) for pos in x_values])
+    psi_values = numpy.array(
+        [psi(pos, x_0, E, sigma, x_start_step, V_0) for pos in x_values])
     psi_values[0] = 0
     psi_values[-1] = 0
     V_values = numpy.array([V(pos, x_start_step, V_0) for pos in x_values])
 
     a = delta_t / (1j * h_bar)
-    b = (- (h_bar ** 2 / (2 * m)))
+    b = - (h_bar ** 2) / (2 * m)
 
     counter = 0
     img_num = 0
@@ -87,26 +88,51 @@ if __name__ == '__main__':
         phi_values[-1] = 0
         phi_values[0] = 0
 
-
-
-        # Plotting the wave packet
+        # Plot the wave packet
         if counter % plot_step == 0:
             fig = plt.figure()
             plt.plot(x_values, (phi_values * numpy.conj(phi_values)))
+            plt.title("Propagation of wave packet")
+            plt.xlabel("x [m]")
+            plt.ylabel("Probability density")
             fig.savefig(f'img{str(img_num)}.png')
             plt.close(fig)
             plt.show()
             img_num += 1
-            R = reflection_coef(x_values, phi_values)
-            T = transmission_coef(x_values, phi_values)
+
+            # Plot first and last image
+            if counter == 0:
+                fig = plt.figure()
+                plt.plot(x_values, (phi_values * numpy.conj(phi_values)))
+                plt.title("Propagation of wave packet for t = 0")
+                plt.xlabel("x [m]")
+                plt.ylabel("Probability density")
+                plt.show()
+            elif counter == 2E6:
+                fig = plt.figure()
+                plt.plot(x_values, (phi_values * numpy.conj(phi_values)))
+                plt.title("Propagation of wave packet for t = 2E6")
+                plt.xlabel("x [m]")
+                plt.ylabel("Probability density")
+                plt.show()
 
         psi_values = phi_values
         counter += 1
 
+    print(counter)
+
+    # Calculate reflection and transmission coefficients
+    # of propagated wave packet
+    R = reflection_coef(x_values, phi_values)
+    T = transmission_coef(x_values, phi_values)
+    print(f"The reflection coefficient is: {R}")
+    print(f"The transmission coefficient is: {T}")
+    print(f"The total probability is: {R + T}")
+
     # Create video
     image_folder = 'C:/Users/Bruker/Documents/Programmering/Oblig_FYS245'
 
-    video_name = 'Kvantepropagering.avi'
+    video_name = 'Wave_packet_propagation.avi'
 
     images = [img for img in os.listdir(image_folder) if img.endswith(".png")]
     frame = cv2.imread(os.path.join(image_folder, images[0]))
@@ -115,7 +141,7 @@ if __name__ == '__main__':
     video = cv2.VideoWriter(video_name, 0, 1, (width, height))
 
     for image in images:
-         video.write(cv2.imread(os.path.join(image_folder, image)))
+        video.write(cv2.imread(os.path.join(image_folder, image)))
 
     video.release()
     cv2.destroyAllWindows()
