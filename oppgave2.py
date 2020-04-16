@@ -7,7 +7,7 @@ import numpy
 import matplotlib.pyplot as plt
 import cv2
 import os
-import subprocess
+
 
 # Defining global variables
 h_bar = 1.055E-34
