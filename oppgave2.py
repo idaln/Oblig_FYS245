@@ -112,7 +112,7 @@ if __name__ == '__main__':
             if counter == 1995000:
                 fig = plt.figure()
                 plt.plot(x_values, (phi_values * numpy.conj(phi_values)))
-                plt.title("Propagation of wave packet for t = 2E6")
+                plt.title("Propagation of wave packet for time step 2E6")
                 plt.xlabel("x [m]")
                 plt.ylabel("Probability density")
                 plt.show()
