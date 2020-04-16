@@ -5,7 +5,7 @@ __email__ = "kjkv@nmbu.no, idna@nmbu.no"
 
 import numpy
 import matplotlib.pyplot as plt
-#import cv2
+import cv2
 import os
 
 # Defining global variables
@@ -64,11 +64,10 @@ if __name__ == '__main__':
     psi_values = numpy.array([psi(pos, x_0, E, sigma, x_start_step, V_0) for pos in x_values])
     psi_values[0] = 0
     psi_values[-1] = 0
-    print(psi_values)
     V_values = numpy.array([V(pos, x_start_step, V_0) for pos in x_values])
 
-    a = delta_t / 1j * h_bar
-    b = -h_bar ** 2 / 2 * m
+    a = delta_t / (1j * h_bar)
+    b = (- (h_bar ** 2 / (2 * m)))
 
     counter = 0
     img_num = 0
