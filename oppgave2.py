@@ -5,7 +5,7 @@ __email__ = "kjkv@nmbu.no, idna@nmbu.no"
 
 import numpy
 import matplotlib.pyplot as plt
-import cv2
+#import cv2
 import os
 
 # Defining global variables
@@ -13,16 +13,14 @@ h_bar = 1.055E-34
 m = 9.109E-31
 
 
-def psi(pos, pos_0, E, sigma):
+def psi(pos, pos_0, E, sigma, x_start_step, V_0):
     """ Time-independent wave function for wave packet. """
-    k = (numpy.sqrt(2*m*E))/h_bar
+    k = (numpy.sqrt(2*m*(E - V(pos, x_start_step, V_0))))/h_bar
     a = 1/(numpy.pi**(1/4)*numpy.sqrt(sigma))
     b = (-1/2) * ((pos - pos_0)**2)/(sigma**2)
     c = 1j * k * (pos - pos_0)
-    if pos == 0 or pos == L:
-        return 0
-    else:
-        return a * numpy.exp(b) * numpy.exp(c)
+
+    return a * numpy.exp(b) * numpy.exp(c)
 
 
 def V(x, x_start_step, V_0):
@@ -63,7 +61,10 @@ if __name__ == '__main__':
     plot_step = 5000
 
     x_values = numpy.arange(0, L, delta_pos)
-    psi_values = numpy.array([psi(pos, x_0, E, sigma) for pos in x_values])
+    psi_values = numpy.array([psi(pos, x_0, E, sigma, x_start_step, V_0) for pos in x_values])
+    psi_values[0] = 0
+    psi_values[-1] = 0
+    print(psi_values)
     V_values = numpy.array([V(pos, x_start_step, V_0) for pos in x_values])
 
     a = delta_t / 1j * h_bar
@@ -86,6 +87,8 @@ if __name__ == '__main__':
         # Defining wave packet at boundaries
         phi_values[-1] = 0
         phi_values[0] = 0
+
+
 
         # Plotting the wave packet
         if counter % plot_step == 0:
