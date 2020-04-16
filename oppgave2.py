@@ -20,7 +20,6 @@ def psi(pos, pos_0, E, sigma, x_start_step, V_0):
     a = 1/(numpy.pi**(1/4)*numpy.sqrt(sigma))
     b = (-1/2) * ((pos - pos_0)**2)/(sigma**2)
     c = 1j * k * (pos - pos_0)
-
     return a * numpy.exp(b) * numpy.exp(c)
 
 
@@ -46,47 +45,6 @@ def transmission_coef(x_values, phi_values):
     return abs(numpy.trapz(x_values[x_interval:],
                            numpy.conj(phi_values[x_interval:]) *
                            phi_values[x_interval:]))
-
-
-_DEFAULT_MOVIE_FORMAT = 'mp4'
-# Update this variable to point to your ffmpeg binary
-FFMPEG_BINARY = "C:/Program Files/ffmpeg-20200115-0dc0837-win64-static/bin"
-
-
-def make_movie(movie_fmt=_DEFAULT_MOVIE_FORMAT):
-    """
-    Creates MPEG4 movie from visualization images saved.
-
-    :param movie_fmt: str
-        format for movie (default='mp4')
-
-    :note: Requires ffmpeg to work. Update ffmpeg binary at top of this
-        file.
-
-    The movie is stored as img_base + movie_fmt.
-
-    :raise RuntimeError: if img_base not defined or ffmpeg fails
-    :raise ValueError: if movie format is unknown
-    """
-    img_base = "img"
-    if img_base is None:
-        raise RuntimeError("No filename defined.")
-
-    if movie_fmt == 'mp4':
-        try:
-            subprocess.check_call([FFMPEG_BINARY,
-                                   '-i',
-                                   '{}_%03d.png'.format(img_base),
-                                   '-y',
-                                   '-profile:v', 'baseline',
-                                   '-level', '3.0',
-                                   '-pix_fmt', 'yuv420p',
-                                   '{}.{}'.format(img_base,
-                                                  movie_fmt)])
-        except subprocess.CalledProcessError as err:
-            raise RuntimeError('ERROR: ffmpeg failed with: {}'.format(err))
-    else:
-        raise ValueError('Unknown movie format: ' + movie_fmt)
 
 
 if __name__ == '__main__':
@@ -116,7 +74,7 @@ if __name__ == '__main__':
     img_num = 0
 
     for time in range(int(time_steps)):
-        # Building the wave packet
+        # Build the wave packet
         sec_deriv_psi = (numpy.pad(psi_values[1:], (0, 1), 'constant',
                                    constant_values=0)
                          + numpy.pad(psi_values[:-1], (1, 0), 'constant',
@@ -126,7 +84,7 @@ if __name__ == '__main__':
         phi_values = psi_values + a * (b * sec_deriv_psi + V_values *
                                        psi_values)
 
-        # Defining wave packet at boundaries
+        # Define wave packet at boundaries
         phi_values[-1] = 0
         phi_values[0] = 0
 
@@ -150,7 +108,8 @@ if __name__ == '__main__':
                 plt.xlabel("x [m]")
                 plt.ylabel("Probability density")
                 plt.show()
-            if counter == 2E6:
+
+            if counter == 1995000:
                 fig = plt.figure()
                 plt.plot(x_values, (phi_values * numpy.conj(phi_values)))
                 plt.title("Propagation of wave packet for t = 2E6")
@@ -160,8 +119,6 @@ if __name__ == '__main__':
 
         psi_values = phi_values
         counter += 1
-
-    print(counter)
 
     # Calculate reflection and transmission coefficients
     # of propagated wave packet
@@ -187,5 +144,3 @@ if __name__ == '__main__':
 
     video.release()
     cv2.destroyAllWindows()
-
-    make_movie()
