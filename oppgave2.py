@@ -56,8 +56,8 @@ if __name__ == '__main__':
     x_0 = 50E-9
     L = 200E-9
     delta_pos = 1.5E-10
-    delta_t = 2.25E-19
-    time_steps = 2E6
+    delta_t = 2.25E-18
+    time_steps = 2E4
     plot_step = 5000
 
     x_values = numpy.arange(0, L, delta_pos)
