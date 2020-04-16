@@ -66,8 +66,8 @@ if __name__ ==  "__main__":
     psi_v[len(x_v) - 1] = 0
     psi_v[0] = 0
     V_values = np.array([V(x) for x in x_v])
-    a = (delta_t / (1j * h_bar))
-    b = (-(h_bar ** 2 / (2 * m)))
+    a = delta_t / (1j * h_bar)
+    b = -h_bar ** 2 / (2 * m)
     counter = 0
     pict_count = 0
     for time in range(timesteps):
