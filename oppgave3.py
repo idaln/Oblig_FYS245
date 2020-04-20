@@ -54,10 +54,9 @@ if __name__ == "__main__":
         T = transmission_coef(energy, V_0, alpha)
         trans_coef = np.vstack((trans_coef, np.array(T)))
 
-    num_y_ticks = np.int(n/10)
-    num_x_ticks = np.int(n/10)
-    xticks = np.linspace(0, n - 1, num_x_ticks, dtype=np.int)
-    yticks = np.linspace(0, n - 1, num_y_ticks, dtype=np.int)
+    num_ticks = np.int(n/10)
+    xticks = np.linspace(0, n - 1, num_ticks, dtype=np.int)
+    yticks = np.linspace(0, n - 1, num_ticks, dtype=np.int)
     xticklabels = [round(alpha[idx] * (180 / np.pi), 1) for idx in xticks]
     yticklabels = [round(E[idx]/1.6022E-19, 3) for idx in yticks]
 
@@ -73,5 +72,3 @@ if __name__ == "__main__":
     plt.ylabel("Energy values [eV]")
     plt.title("Transmission coefficent of incident angle and energy")
     plt.show()
-
-
