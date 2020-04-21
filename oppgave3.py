@@ -73,10 +73,10 @@ if __name__ == "__main__":
     plt.title("Transmission coefficient of incident angle and energy")
     plt.show()
 
-    plt.plot(alpha*180/np.pi, transmission_coef(E[0], V_0, alpha))
+    plt.plot(alpha*180/np.pi, transmission_coef(E[-1], V_0, alpha))
     plt.xlabel("Alpha values [degrees]")
     plt.ylabel("Transmission coefficient")
-    plt.title("Transmission coefficient of incident angle with energy 0.20 eV")
+    plt.title("Transmission coefficient of incident angle with energy 0.40 eV")
     plt.show()
 
     print(k_x(E=0.2 * 1.6022E-19, alpha=alpha))
