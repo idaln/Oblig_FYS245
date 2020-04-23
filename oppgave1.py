@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
+""" Vedlegg 1 """
+
 __author__ = "Kjersti Rustad Kvisberg & Ida Lunde Naalsund"
 __email__ = "kjkv@nmbu.no, idna@nmbu.no"
-
-# Problem 1
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -36,9 +36,11 @@ def ref_coef(E, V_0):
 
 
 if __name__ == '__main__':
+    # Initialize constants
     E = 0.20 * 1.6602E-13
     V_0 = 0.16 * 1.6602E-13
 
+    # Compute and print transmission and reflection coefficients
     T = trans_coef(E, V_0)
     R = ref_coef(E, V_0)
     print(f' The transmission coefficient is {T:.3f}')
@@ -46,11 +48,10 @@ if __name__ == '__main__':
     print(f' The sum of the transmission and reflection coefficients is '
           f'{(R + T):.3f}')
 
+    # Plot transmission coefficient
     E = np.linspace(0.2*1.6602E-13, 0.4*1.6602E-13, 1000)
     plt.plot(E, trans_coef(E, V_0))
     plt.title('Transmission coefficient for different particle energies')
     plt.xlabel('Energy [J]')
     plt.ylabel('Transmission coefficient')
     plt.show()
-
-
