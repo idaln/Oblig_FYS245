@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-""" Vedlegg 2 """
-
 __author__ = "Kjersti Rustad Kvisberg & Ida Lunde Naalsund"
 __email__ = "kjkv@nmbu.no, idna@nmbu.no"
 
