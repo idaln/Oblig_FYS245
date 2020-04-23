@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+""" Vedlegg 3 """
+
 __author__ = "Ida Lunde Naalsund & Kjersti Rustad Kvisberg"
 __email__ = "idna@nmbu.no, kjkv@nmbu.no"
 
@@ -7,7 +9,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# Defining global variables
+# Define global variables
 h_bar = 1.055E-34
 m = 9.109E-31
 
@@ -44,16 +46,19 @@ def transmission_coef(E, V_0, alpha):
 
 
 if __name__ == "__main__":
+    # Initialize constants
     n = 100
     E = np.linspace(0.2, 0.4, n) * 1.6022E-19
     alpha = np.linspace(0, np.pi/9, n)
     V_0 = 0.16 * 1.6022E-19
 
+    # Compute transmission coefficient
     trans_coef = np.empty((0, n))
     for energy in E:
         T = transmission_coef(energy, V_0, alpha)
         trans_coef = np.vstack((trans_coef, np.array(T)))
 
+    # Initialize and plot heatmap
     num_ticks = np.int(n/10)
     xticks = np.linspace(0, n - 1, num_ticks, dtype=np.int)
     yticks = np.linspace(0, n - 1, num_ticks, dtype=np.int)
@@ -73,12 +78,16 @@ if __name__ == "__main__":
     plt.title("Transmission coefficient of incident angle and energy")
     plt.show()
 
+    # Plot graph for energy 0.2 eV
+    plt.plot(alpha * 180 / np.pi, transmission_coef(E[0], V_0, alpha))
+    plt.xlabel("Alpha values [degrees]")
+    plt.ylabel("Transmission coefficient")
+    plt.title("Transmission coefficient of incident angle with energy 0.20 eV")
+    plt.show()
+
+    # Plot graph for energy 0.4 eV
     plt.plot(alpha*180/np.pi, transmission_coef(E[-1], V_0, alpha))
     plt.xlabel("Alpha values [degrees]")
     plt.ylabel("Transmission coefficient")
     plt.title("Transmission coefficient of incident angle with energy 0.40 eV")
     plt.show()
-
-    print(k_x(E=0.2 * 1.6022E-19, alpha=alpha))
-    print(k_0x(E=0.2 * 1.6022E-19, V_0=V_0, alpha=alpha))
-    print(k_y(E=0.2 * 1.6022E-19, alpha=alpha))
