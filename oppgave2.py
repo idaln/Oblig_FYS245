@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+""" Vedlegg 2 """
+
 __author__ = "Kjersti Rustad Kvisberg & Ida Lunde Naalsund"
 __email__ = "kjkv@nmbu.no, idna@nmbu.no"
 
@@ -9,7 +11,7 @@ import cv2
 import os
 
 
-# Defining global variables
+# Define global variables
 h_bar = 1.055E-34
 m = 9.109E-31
 
