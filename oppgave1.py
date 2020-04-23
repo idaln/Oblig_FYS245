@@ -1,14 +1,12 @@
 # -*- coding: utf-8 -*-
 
-""" Vedlegg 1 """
-
 __author__ = "Kjersti Rustad Kvisberg & Ida Lunde Naalsund"
 __email__ = "kjkv@nmbu.no, idna@nmbu.no"
 
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Defining global variables
+# Define global variables
 h_bar = 1.055E-34
 m = 9.109E-31
 
